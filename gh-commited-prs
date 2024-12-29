@@ -1,0 +1,123 @@
+#!/usr/bin/env bash
+set -e
+
+help() {
+  help_message="
+List GitHub Pull Requests which include commits by specified author.
+
+You must be in the repository's git directory and you must pull the repository before executing this command.
+
+USAGE
+  gh commited-prs [flags]
+
+FLAGS
+  -h, --help     Show this help message
+  --author       Search by commit author (default to your system git user.email)
+  --from         Search commits from this date
+  --to           Search commits to date (default to today)
+  --exclude-head Specify head branch of Pull Requests to exclude
+
+EXAMPLES
+  List Pull Requests which include commits by you until today
+  $ gh commited-prs --from 2024-07-01
+
+  List Pull Requests between specific dates
+  $ gh commited-prs --from 2024-07-01 --to 2024-12-31
+
+  List Pull Requests by specific person (Can be email or name)
+  $ gh commited-prs --author john@example.com --from 2024-07-01
+
+  List Pull Requests by excluding head branch (Useful for Gitflow alike to exclude release Pull Requests)
+  $ gh commited-prs --from 2024-07-01 --exclude-head develop
+"
+
+  echo "$help_message"
+}
+
+validate_date_options() {
+  if [ -z "$date_from" ]; then
+      echo "Error: --from option is required" >&2
+      exit 1
+  fi
+
+  if ! [[ $date_from =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
+      echo "Error: --from date must be in YYYY-MM-DD format" >&2
+      exit 1
+  fi
+
+  if ! [[ $date_to =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
+      echo "Error: --to date must be in YYYY-MM-DD format" >&2
+      exit 1
+  fi
+}
+
+commits_per_branch() {
+  main_branch=$(gh repo view --json "defaultBranchRef" --jq ".defaultBranchRef.name")
+
+  merge_commit_hashes=$(git log --merges --since="$date_from" --until="$date_to" --format=%h "$main_branch")
+
+  branch_commit_hashes=$(for merge_commit in $merge_commit_hashes; do
+    parent=$(git rev-parse "${merge_commit}^1")
+    feature=$(git rev-parse "${merge_commit}^2")
+
+    git log --no-merges --author="$author" --format="%h" "${parent}..${feature}" | head -n 1
+  done | sort | uniq)
+}
+
+list() {
+  echo "$branch_commit_hashes" | xargs -n 10 | \
+  while read -r batch_commit_hashes; do
+    if  [ -z "$exclude_head" ]; then
+      gh pr list --state merged --search "$batch_commit_hashes" --json number,title,url,mergedAt
+    else
+      gh pr list --state merged --search "-head:${exclude_head} ${batch_commit_hashes}" --json number,title,url,mergedAt
+    fi
+  done | jq -rs 'add | sort_by(.mergedAt) | (["NUMBER","TITLE","URL","MERGED AT"]), (.[] | ["#\(.number)", .title, .url, (.mergedAt | fromdateiso8601 | strflocaltime("%Y-%m-%d %H:%M"))]) | @tsv' | column -ts $'\t' | uniq
+}
+
+if [[ "$#" -eq 0 ]]; then
+  help
+  exit 2
+fi
+
+# Set default options
+author=$(git config --get user.email)
+date_to=$(date +"%Y-%m-%d")
+
+# Get options
+while [[ "$#" -gt 0 ]]; do
+	case $1 in
+	-h | --help)
+		help
+		shift
+		;;
+  --author)
+    author="$2"
+    shift 2
+    ;;
+  --from)
+    date_from="$2"
+    shift 2
+    ;;
+  --to)
+    date_to="$2"
+    shift 2
+    ;;
+  --exclude-head)
+    exclude_head="$2"
+    shift 2
+    ;;
+  *)
+	  help >&2
+	  exit 1
+	  ;;
+	esac
+done
+
+validate_date_options
+
+echo "Collecting commits (this might take a while)..."
+commits_per_branch
+
+echo "Listing Pull Requests..."
+list
