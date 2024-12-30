@@ -1,11 +1,11 @@
-# gh-commited-prs
+# gh-committed-prs
 
-`gh-commited-prs` is a gh extension to list pull requests which include commits by specified author.
+`gh-committed-prs` is a gh extension to list pull requests which include commits by specified author.
 
 ## Installation
 
 ```console
-gh extension install tnagatomi/gh-commited-prs
+gh extension install tnagatomi/gh-committed-prs
 ```
 
 ## FLAGS
@@ -23,25 +23,25 @@ gh extension install tnagatomi/gh-commited-prs
 List pull equests which include commits by you until today
 
 ```console
-gh commited-prs --from 2024-07-01
+gh committed-prs --from 2024-07-01
 ```
 
 List pull requests between specific dates
 
 ```console
-gh commited-prs --from 2024-07-01 --to 2024-12-31
+gh committed-prs --from 2024-07-01 --to 2024-12-31
 ```
 
 List pull requests by specific person (Can be email or name)
 
 ```console
-gh commited-prs --author john@example.com --from 2024-07-01
+gh committed-prs --author john@example.com --from 2024-07-01
 ```
 
 List pull requests by excluding head branch (Useful for Gitflow alike to exclude release pull requests)
 
 ```console
-gh commited-prs --from 2024-07-01 --exclude-head develop
+gh committed-prs --from 2024-07-01 --exclude-head develop
 ```
 
 ## Limitation
