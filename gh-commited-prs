@@ -86,11 +86,11 @@ date_to=$(date +"%Y-%m-%d")
 
 # Get options
 while [[ "$#" -gt 0 ]]; do
-	case $1 in
-	-h | --help)
-		help
-		shift
-		;;
+  case $1 in
+  -h | --help)
+    help
+    shift
+    ;;
   --author)
     author="$2"
     shift 2
@@ -108,10 +108,10 @@ while [[ "$#" -gt 0 ]]; do
     shift 2
     ;;
   *)
-	  help >&2
-	  exit 1
-	  ;;
-	esac
+    help >&2
+    exit 1
+    ;;
+  esac
 done
 
 validate_date_options
