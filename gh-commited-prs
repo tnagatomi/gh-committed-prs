@@ -14,7 +14,7 @@ FLAGS
   -h, --help     Show this help message
   --author       Search by commit author (default to your system git user.email)
   --from         Search commits from this date
-  --to           Search commits to date (default to today)
+  --to           Search commits to this date (default to today)
   --exclude-head Specify head branch of pull requests to exclude
 
 EXAMPLES
