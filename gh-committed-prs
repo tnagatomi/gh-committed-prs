@@ -8,7 +8,7 @@ List GitHub pull requests which include commits by specified author.
 You must be in the repository's git directory and you must pull the repository before executing this command.
 
 USAGE
-  gh commited-prs [flags]
+  gh committed-prs [flags]
 
 FLAGS
   -h, --help     Show this help message
@@ -19,16 +19,16 @@ FLAGS
 
 EXAMPLES
   List pull requests which include commits by you until today
-  $ gh commited-prs --from 2024-07-01
+  $ gh committed-prs --from 2024-07-01
 
   List pull requests between specific dates
-  $ gh commited-prs --from 2024-07-01 --to 2024-12-31
+  $ gh committed-prs --from 2024-07-01 --to 2024-12-31
 
   List pull requests by specific person (Can be email or name)
-  $ gh commited-prs --author john@example.com --from 2024-07-01
+  $ gh committed-prs --author john@example.com --from 2024-07-01
 
   List pull requests by excluding head branch (Useful for Gitflow alike to exclude release pull requests)
-  $ gh commited-prs --from 2024-07-01 --exclude-head develop
+  $ gh committed-prs --from 2024-07-01 --exclude-head develop
 "
 
   echo "$help_message"
