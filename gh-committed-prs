@@ -24,10 +24,10 @@ EXAMPLES
   List pull requests between specific dates
   $ gh committed-prs --from 2024-07-01 --to 2024-12-31
 
-  List pull requests by specific person (Can be email or name)
+  List pull requests by specific commit author (can be email or name):
   $ gh committed-prs --author john@example.com --from 2024-07-01
 
-  List pull requests by excluding head branch (Useful for Gitflow alike to exclude release pull requests)
+  List pull requests by excluding head branch (useful for Gitflow alike to exclude release pull requests):
   $ gh committed-prs --from 2024-07-01 --exclude-head develop
 "
 
