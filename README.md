@@ -1,6 +1,6 @@
 # gh-commited-prs
 
-`gh-commited-prs` is a gh extension to list GitHub Pull Requests which include commits by specified author.
+`gh-commited-prs` is a gh extension to list Pull Requests which include commits by specified author.
 
 ## Installation
 
