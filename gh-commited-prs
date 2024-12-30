@@ -3,7 +3,7 @@ set -e
 
 help() {
   help_message="
-List GitHub Pull Requests which include commits by specified author.
+List GitHub pull requests which include commits by specified author.
 
 You must be in the repository's git directory and you must pull the repository before executing this command.
 
@@ -15,19 +15,19 @@ FLAGS
   --author       Search by commit author (default to your system git user.email)
   --from         Search commits from this date
   --to           Search commits to date (default to today)
-  --exclude-head Specify head branch of Pull Requests to exclude
+  --exclude-head Specify head branch of pull requests to exclude
 
 EXAMPLES
-  List Pull Requests which include commits by you until today
+  List pull requests which include commits by you until today
   $ gh commited-prs --from 2024-07-01
 
-  List Pull Requests between specific dates
+  List pull requests between specific dates
   $ gh commited-prs --from 2024-07-01 --to 2024-12-31
 
-  List Pull Requests by specific person (Can be email or name)
+  List pull requests by specific person (Can be email or name)
   $ gh commited-prs --author john@example.com --from 2024-07-01
 
-  List Pull Requests by excluding head branch (Useful for Gitflow alike to exclude release Pull Requests)
+  List pull requests by excluding head branch (Useful for Gitflow alike to exclude release pull requests)
   $ gh commited-prs --from 2024-07-01 --exclude-head develop
 "
 
@@ -119,5 +119,5 @@ validate_date_options
 echo "Collecting commits (this might take a while)..."
 commits_per_branch
 
-echo "Listing Pull Requests..."
+echo "Listing pull requests..."
 list
