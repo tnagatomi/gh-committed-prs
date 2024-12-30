@@ -1,4 +1,4 @@
-# gh-fuda
+# gh-commited-prs
 
 `gh-commited-prs` is a gh extension to list GitHub Pull Requests which include commits by specified author.
 
