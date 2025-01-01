@@ -54,13 +54,11 @@ validate_date_options() {
 commits_per_branch() {
   main_branch=$(gh repo view --json "defaultBranchRef" --jq ".defaultBranchRef.name")
 
-  merge_commit_hashes=$(git log --merges --since="$date_from" --until="$date_to" --format=%h "$main_branch")
+  branch_commit_hashes=$(git log --merges --since="$date_from" --until="$date_to" --format='%P' "$main_branch" | \
+    while read -r parents; do
+      read -r parent feature <<< "$parents"
 
-  branch_commit_hashes=$(for merge_commit in $merge_commit_hashes; do
-    parent=$(git rev-parse "${merge_commit}^1")
-    feature=$(git rev-parse "${merge_commit}^2")
-
-    git log --no-merges --author="$author" --format="%h" "${parent}..${feature}" | head -n 1
+      git log -1 --no-merges --author="$author" --format="%h" "${parent}..${feature}"
   done | sort | uniq)
 }
 
