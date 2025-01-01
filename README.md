@@ -48,5 +48,5 @@ gh committed-prs --from 2024-07-01 --exclude-head develop
 
 ## Limitation
 
-- Squash merges and rebase merges are not supported
+- Squash merge and rebase merge pull requests are not supported
 - It might take a while to process local git if specified date range's commit log is large
