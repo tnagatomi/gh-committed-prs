@@ -20,7 +20,9 @@ gh extension install tnagatomi/gh-committed-prs
 
 ## Usage
 
-List pull equests which include commits by you until today:
+You must be in the repository's git directory, and you must pull the repository before executing this command.
+
+List pull requests which include commits by you until today:
 
 ```
 gh committed-prs --from 2024-07-01

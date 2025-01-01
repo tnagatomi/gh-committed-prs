@@ -5,7 +5,7 @@ help() {
   help_message="
 List GitHub pull requests which include commits by specified author.
 
-You must be in the repository's git directory and you must pull the repository before executing this command.
+You must be in the repository's git directory, and you must pull the repository before executing this command.
 
 USAGE
   gh committed-prs [flags]
