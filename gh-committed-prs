@@ -70,7 +70,7 @@ list() {
     else
       gh pr list --state merged --search "-head:${exclude_head} ${batch_commit_hashes}" --json number,title,url,mergedAt
     fi
-  done | jq -rs 'add | sort_by(.mergedAt) | (["NUMBER","TITLE","URL","MERGED AT"]), (.[] | ["#\(.number)", .title, .url, (.mergedAt | fromdateiso8601 | strflocaltime("%Y-%m-%d %H:%M"))]) | @tsv' | column -ts $'\t' | uniq
+  done | jq -rs 'add | sort_by(.mergedAt) | ("| NUMBER | TITLE | URL | MERGED AT |"), (.[] | "| #\(.number) | \(.title) | \(.url) | \(.mergedAt | fromdateiso8601 | strflocaltime("%Y-%m-%d %H:%M")) |")' | uniq
 }
 
 if [[ "$#" -eq 0 ]]; then
